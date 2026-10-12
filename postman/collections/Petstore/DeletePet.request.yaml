@@ -1,0 +1,5 @@
+$kind: http-request
+name: DeletePet
+url: https://petstore.swagger.io/v2/pet/{{petId}}
+method: DELETE
+order: 3880975547293642
