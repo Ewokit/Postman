@@ -1,0 +1,49 @@
+$kind: http-request
+name: List Repository Issues
+url: https://api.github.com/repos/microsoft/vscode/issues?state=open&per_page=5&page=1
+method: GET
+headers:
+  Accept: application/vnd.github+json
+queryParams:
+  - key: state
+    value: open
+    disabled: false
+    description: ""
+  - key: per_page
+    value: "5"
+    disabled: false
+    description: ""
+  - key: page
+    value: "1"
+    disabled: false
+    description: ""
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      pm.test(\"Response time is under 3 seconds\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(3000);\r
+
+      });\r
+
+      pm.test(\"Content-Type is present\", function () {\r
+
+      \    pm.response.to.have.header(\"Content-Type\");\r
+
+      });\r
+
+      pm.test(\"All returned issues are open\", () => {\r
+
+      \    pm.response.json().forEach(issue => {\r
+
+      \        pm.expect(issue.state).to.eql(\"open\");\r
+
+      \    });\r
+
+      });"
+    language: text/javascript
